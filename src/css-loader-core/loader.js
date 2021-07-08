@@ -58,10 +58,11 @@ export default class FileSystemLoader {
     return new Promise((resolve, reject) => {
       let relativeDir = path.dirname(relativeTo),
         rootRelativePath = path.resolve(relativeDir, newPath),
-        fileRelativePath = path.resolve(
-          path.join(this.root, relativeDir),
-          newPath
-        );
+        fileRelativePath = path.resolve(relativeDir, newPath);
+
+      if (newPath[0] === "/") {
+        fileRelativePath = path.join(this.root, newPath);
+      }
 
       // if the path is not relative or absolute, try to resolve it in node_modules
       if (newPath[0] !== "." && newPath[0] !== "/") {
